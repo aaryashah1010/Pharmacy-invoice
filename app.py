@@ -375,7 +375,6 @@ def demo_webhook():
 def get_demo_webhook_data():
     """Get all JSON data received by the demo webhook."""
     return jsonify({
-        'count': len(RECEIVED_WEBHOOK_DATA),
         'data': RECEIVED_WEBHOOK_DATA
     })
 
@@ -526,16 +525,16 @@ def test_webhook_system():
             'recent_logs': WEBHOOK_LOGS[-3:] if len(WEBHOOK_LOGS) > 0 else []
         })
         
-        # Summary
-        success_count = sum(1 for test in results['tests'] if test['status'] == 'success')
-        total_count = len(results['tests'])
+        # # Summary
+        # success_count = sum(1 for test in results['tests'] if test['status'] == 'success')
+        # total_count = len(results['tests'])
         
-        results['summary'] = {
-            'total_tests': total_count,
-            'successful': success_count,
-            'failed': total_count - success_count,
-            'overall_status': 'success' if success_count == total_count else 'partial_success'
-        }
+        # results['summary'] = {
+        #     'total_tests': total_count,
+        #     'successful': success_count,
+        #     'failed': total_count - success_count,
+        #     'overall_status': 'success' if success_count == total_count else 'partial_success'
+        # }
         
         results['usage_info'] = {
             'demo_webhook_url': request.url_root.rstrip('/') + '/api/demo-webhook',
