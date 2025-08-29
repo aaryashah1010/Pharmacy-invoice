@@ -75,7 +75,7 @@ const InvoiceDataDisplay = ({ data }) => {
     if (!items || items.length === 0) return null;
     
     // Calculate totals
-    const subtotal = items.reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
+    
     const tax = data.tax_info ? (parseFloat(data.tax_info.igst) || parseFloat(data.tax_info.cgst) + parseFloat(data.tax_info.sgst) || 0) : 0;
     const shipping = data.totals?.shipping ? parseFloat(data.totals.shipping) : 0;
     const discount = data.totals?.discount ? parseFloat(data.totals.discount) : 0;
@@ -143,14 +143,6 @@ const InvoiceDataDisplay = ({ data }) => {
               })}
               
               {/* Totals Row */}
-              <tr className="bg-gray-50">
-                <td colSpan="5" className="px-6 py-4 text-right text-sm font-medium text-gray-900">
-                  Subtotal:
-                </td>
-                <td colSpan="2" className="px-6 py-4 text-right text-sm font-medium">
-                  ${subtotal.toFixed(2)}
-                </td>
-              </tr>
               {shipping > 0 && (
                 <tr className="bg-gray-50">
                   <td colSpan="5" className="px-6 py-1 text-right text-sm text-gray-500">
@@ -253,12 +245,7 @@ const InvoiceDataDisplay = ({ data }) => {
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Order Summary</h3>
           <div className="max-w-md ml-auto">
             <div className="space-y-2">
-              {data.summary.subtotal !== undefined && (
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Subtotal:</span>
-                  <span className="font-medium">₹{parseFloat(data.summary.subtotal).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
-                </div>
-              )}
+            
               {data.summary.shipping !== undefined && (
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Shipping:</span>

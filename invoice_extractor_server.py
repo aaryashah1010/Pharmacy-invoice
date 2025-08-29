@@ -121,11 +121,12 @@ def extract_fields_from_image(image_path: str) -> Tuple[Dict[str, str], str]:
         }
         
         IMPORTANT INSTRUCTIONS:
-        1. If any field is not present or not applicable, set it to null
-        2. For items array, include ALL items found on the invoice with their complete details
-        3. Make sure all numerical values are properly formatted as numbers, not strings
-        4. Only extract data that is actually present on the invoice
-        5. Do not make up or assume any values"""
+        1. Only extract the fields listed in the JSON structure above for each item. **Do NOT extract or include any other columns such as "Mfg" or "manufacturer".**
+        2. If any field is not present or not applicable, set it to null.
+        3. For items array, include ALL items found on the invoice with their complete details.
+        4. Make sure all numerical values are properly formatted as numbers, not strings.
+        5. Only extract data that is actually present on the invoice.
+        6. Do not make up or assume any values."""
         
         # Generate content
         response = MODEL.generate_content([prompt, {"mime_type": "image/jpeg", "data": img_data}])
