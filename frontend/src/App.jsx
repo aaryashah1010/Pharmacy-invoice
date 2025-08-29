@@ -74,12 +74,14 @@ const InvoiceDataDisplay = ({ data }) => {
   const renderItems = (items = []) => {
     if (!items || items.length === 0) return null;
     
-    // Calculate totals
-    const subtotal = items.reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
-    const tax = data.tax_info ? (parseFloat(data.tax_info.igst) || parseFloat(data.tax_info.cgst) + parseFloat(data.tax_info.sgst) || 0) : 0;
-    const shipping = data.totals?.shipping ? parseFloat(data.totals.shipping) : 0;
-    const discount = data.totals?.discount ? parseFloat(data.totals.discount) : 0;
-    const total = data.totals?.total_invoice || (subtotal + tax + shipping - discount);
+    // Get values directly from data.totals if they exist, default to 0 if not present
+    const { 
+      subtotal = 0,
+      shipping = 0, 
+      discount = 0,
+      tax = 0,
+      total_invoice: total = 0
+    } = data.totals || {};
     
     return (
       <div className="mb-6">
@@ -142,51 +144,58 @@ const InvoiceDataDisplay = ({ data }) => {
                 );
               })}
               
-              {/* Totals Row */}
-              <tr className="bg-gray-50">
-                <td colSpan="5" className="px-6 py-4 text-right text-sm font-medium text-gray-900">
-                  Subtotal:
-                </td>
-                <td colSpan="2" className="px-6 py-4 text-right text-sm font-medium">
-                  ${subtotal.toFixed(2)}
-                </td>
-              </tr>
+              {/* Totals Section - Only show rows for values that exist and are greater than 0 */}
+              {(subtotal > 0 || subtotal === 0) && (
+                <tr className="bg-gray-50">
+                  <td colSpan="5" className="px-6 py-3 text-right text-sm font-medium text-gray-900">
+                    Subtotal:
+                  </td>
+                  <td colSpan="2" className="px-6 py-3 text-right text-sm font-medium">
+                    ${parseFloat(subtotal).toFixed(2)}
+                  </td>
+                </tr>
+              )}
+              
               {shipping > 0 && (
                 <tr className="bg-gray-50">
                   <td colSpan="5" className="px-6 py-1 text-right text-sm text-gray-500">
                     Shipping:
                   </td>
                   <td colSpan="2" className="px-6 py-1 text-right text-sm text-gray-500">
-                    ${shipping.toFixed(2)}
+                    ${parseFloat(shipping).toFixed(2)}
                   </td>
                 </tr>
               )}
+              
               {discount > 0 && (
                 <tr className="bg-gray-50">
                   <td colSpan="5" className="px-6 py-1 text-right text-sm text-gray-500">
                     Discount:
                   </td>
                   <td colSpan="2" className="px-6 py-1 text-right text-sm text-red-600">
-                    -${discount.toFixed(2)}
+                    -${parseFloat(discount).toFixed(2)}
                   </td>
                 </tr>
               )}
+              
               {tax > 0 && (
                 <tr className="bg-gray-50">
                   <td colSpan="5" className="px-6 py-1 text-right text-sm text-gray-500">
                     Tax:
                   </td>
                   <td colSpan="2" className="px-6 py-1 text-right text-sm text-gray-500">
-                    ${tax.toFixed(2)}
+                    ${parseFloat(tax).toFixed(2)}
                   </td>
                 </tr>
               )}
-              <tr className="bg-gray-100 border-t border-gray-200">
-                <td colSpan="5" className="px-6 py-4 text-right text-lg font-bold text-gray-900">
+              
+              {/* Total row - always show */}
+              <tr className="bg-gray-100 border-t-2 border-gray-300">
+                <td colSpan="5" className="px-6 py-3 text-right text-lg font-bold text-gray-900">
                   TOTAL:
                 </td>
-                <td colSpan="2" className="px-6 py-4 text-right text-lg font-bold text-gray-900">
-                  ${total.toFixed(2)}
+                <td colSpan="2" className="px-6 py-3 text-right text-lg font-bold text-gray-900">
+                  ${parseFloat(total).toFixed(2)}
                 </td>
               </tr>
             </tbody>
