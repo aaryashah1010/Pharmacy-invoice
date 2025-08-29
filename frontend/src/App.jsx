@@ -393,9 +393,7 @@ function App() {
     if (!extractedData) return
 
     try {
-      const baseUrl = import.meta.env.VITE_API_URL || '';
-      const apiUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-      const response = await fetch(`${apiUrl}/api/download-csv`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/download-csv`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -425,9 +423,7 @@ function App() {
     if (!extractedData) return
 
     try {
-      const baseUrl = import.meta.env.VITE_API_URL || '';
-      const apiUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-      const response = await fetch(`${apiUrl}/api/download-json`, {
+      const response = await fetch((import.meta.env.VITE_API_URL || '') + '/api/download-json', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
