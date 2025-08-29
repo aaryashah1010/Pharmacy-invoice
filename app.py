@@ -12,6 +12,7 @@ from invoice_extractor_server import extract_fields_from_image
 
 app = Flask(__name__)
 
+# Configure CORS to allow requests from Vercel frontend and local development
 CORS(app, origins=["*"])
 
 # Configure upload settings
